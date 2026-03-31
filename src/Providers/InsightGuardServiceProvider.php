@@ -3,33 +3,53 @@
 namespace Adeel3330\InsightGuard\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Adeel3330\InsightGuard\Services\InsightGuardManager;
 use Adeel3330\InsightGuard\Commands\RunInsightScan;
 
 class InsightGuardServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        // Merge default config
-        $this->mergeConfigFrom(__DIR__.'/../../config/insightguard.php', 'insightguard');
+        // Merge config safely
+        if (file_exists(__DIR__ . '/../../config/insightguard.php')) {
+            $this->mergeConfigFrom(
+                __DIR__ . '/../../config/insightguard.php',
+                'insightguard'
+            );
+        }
 
-        // Register command
-        $this->app->singleton('command.insightguard.scan', RunInsightScan::class);
-        $this->commands([
-            'command.insightguard.scan',
-        ]);
+        // Bind main service
+        $this->app->singleton('insight-guard', function ($app) {
+            return new InsightGuardManager();
+        });
+
+        // Register command (only in console)
+        if ($this->app->runningInConsole()) {
+            $this->app->singleton(RunInsightScan::class, function ($app) {
+                return new RunInsightScan();
+            });
+
+            $this->commands([
+                RunInsightScan::class,
+            ]);
+        }
     }
 
     public function boot()
     {
         // Publish config
-        $this->publishes([
-            __DIR__.'/../../config/insightguard.php' => config_path('insightguard.php'),
-        ], 'config');
+        if (file_exists(__DIR__ . '/../../config/insightguard.php')) {
+            $this->publishes([
+                __DIR__ . '/../../config/insightguard.php' => config_path('insightguard.php'),
+            ], 'insightguard-config');
+        }
 
-        // Publish dashboard views
-        $this->loadViewsFrom(__DIR__.'/../../src/Dashboard/Views', 'insightguard');
+        // Load views
+        $this->loadViewsFrom(__DIR__ . '/../Dashboard/Views', 'insightguard');
 
-        // Load routes for dashboard
-        $this->loadRoutesFrom(__DIR__.'/../../src/Dashboard/Routes/web.php');
+        // Load routes (only for web, not console)
+        if (! $this->app->runningInConsole()) {
+            $this->loadRoutesFrom(__DIR__ . '/../Dashboard/Routes/web.php');
+        }
     }
 }
