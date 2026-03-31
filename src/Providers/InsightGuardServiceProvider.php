@@ -42,14 +42,22 @@ class InsightGuardServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../../config/insightguard.php' => config_path('insightguard.php'),
             ], 'insightguard-config');
+
+            $this->publishes([
+                __DIR__ . '/../Dashboard/Views' => resource_path('views/vendor/insightguard'),
+            ], 'insightguard-views');
+
+            $this->publishes([
+                __DIR__ . '/../Dashboard/Routes/web.php' => config_path('insightguard.php'),
+            ], 'insightguard-routes');
         }
 
         // Load views
         $this->loadViewsFrom(__DIR__ . '/../Dashboard/Views', 'insightguard');
 
         // Load routes (only for web, not console)
-        if (! $this->app->runningInConsole()) {
+        // if (! ÷$this->app->runningInConsole()) {
             $this->loadRoutesFrom(__DIR__ . '/../Dashboard/Routes/web.php');
-        }
+        // }
     }
 }
