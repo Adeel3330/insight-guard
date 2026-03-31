@@ -25,7 +25,15 @@ class SecurityScanner
                 }
 
                 // Check for validation (simplified: look for calls to $this->validate)
-                if (strpos($method->getBodyAsString(), '$this->validate') === false) {
+                // $method = new ReflectionMethod($controllerClass, $methodName);
+                $filename = $method->getFileName();
+                $startLine = $method->getStartLine();
+                $endLine = $method->getEndLine();
+
+                $source = file($filename);
+                $methodCode = implode("", array_slice($source, $startLine - 1, $endLine - $startLine + 1));
+
+                if (strpos($methodCode, '$this->validate') === false) {
                     $issues[] = "{$controllerClass}@{$method->name} may be missing validation";
                 }
             }
@@ -38,11 +46,11 @@ class SecurityScanner
     {
         // Scan app/Http/Controllers folder
         $controllerPath = app_path('Http/Controllers');
-        $files = glob($controllerPath.'/*.php');
+        $files = glob($controllerPath . '/*.php');
 
         $controllers = [];
         foreach ($files as $file) {
-            $class = 'App\\Http\\Controllers\\'.basename($file, '.php');
+            $class = 'App\\Http\\Controllers\\' . basename($file, '.php');
             if (class_exists($class)) {
                 $controllers[] = $class;
             }
@@ -54,7 +62,7 @@ class SecurityScanner
     private function findRouteForMethod($controller, $method)
     {
         foreach (Route::getRoutes() as $route) {
-            if ($route->getActionName() === $controller.'@'.$method) {
+            if ($route->getActionName() === $controller . '@' . $method) {
                 return $route;
             }
         }

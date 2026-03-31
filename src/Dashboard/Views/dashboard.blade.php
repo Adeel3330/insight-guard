@@ -133,7 +133,7 @@
 
         // Chart.js Performance Chart
         const performanceCtx = document.getElementById('performanceChart').getContext('2d');
-        new Chart(performanceCtx, {
+        const performanceChart = new Chart(performanceCtx, {
             type: 'bar',
             data: {
                 labels: {!! json_encode(array_map(fn($q) => $q['sql'], $performance['slow_queries'])) !!},
