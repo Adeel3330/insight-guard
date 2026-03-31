@@ -4,6 +4,7 @@ namespace Adeel3330\InsightGuard\Services;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Laravel\Prompts\Table;
 
 class DatabaseAnalyzer
 {
@@ -25,10 +26,11 @@ class DatabaseAnalyzer
      */
     protected function detectMissingIndexes(): void
     {
-        $tables = Schema::getAllTables();
+        $tables = collect(Schema::getTables())->filter(fn($table) => $table['schema'] == env('DB_DATABASE'));
+        // dd($tables);
 
         foreach ($tables as $tableObj) {
-            $table = $tableObj->name ?? $tableObj->Tables_in_ . env('DB_DATABASE');
+            $table = $tableObj['name'];
 
             $columns = Schema::getColumnListing($table);
 

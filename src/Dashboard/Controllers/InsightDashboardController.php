@@ -1,6 +1,6 @@
 <?php
 
-namespace Adeel3330\InsightGuard\Controllers;
+namespace Adeel3330\InsightGuard\Dashboard\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ use Adeel3330\InsightGuard\Services\{
     RequestInspector
 };
 
-class DashboardController extends Controller
+class InsightDashboardController extends Controller
 {
     public function index(Request $request)
     {
@@ -26,7 +26,7 @@ class DashboardController extends Controller
         $codeIssues = (new CodeOptimizer())->analyzeRoutes();
         $cacheSuggestions = (new CodeOptimizer())->suggestCaching();
         $requestIssues = (new RequestInspector())->inspect($request);
-
+        // dd($security, $performance, $database, $modelIssues, $codeIssues, $cacheSuggestions, $requestIssues);
         return view('insightguard::dashboard', compact(
             'security', 'performance', 'database', 
             'modelIssues', 'codeIssues', 'cacheSuggestions', 'requestIssues'
