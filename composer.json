@@ -1,0 +1,25 @@
+{
+    "name": "adeel3330/insight-guard",
+    "description": "All-in-one Laravel security, performance, and database optimization analyzer.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Adeel3330\\InsightGuard\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Adeel3330\\InsightGuard\\Providers\\InsightGuardServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^8.1 | ^8.2 | ^8.3 | ^8.4 | ^8.5",
+        "illuminate/support": "^10 | ^11 | ^12 | ^13",
+        "barryvdh/laravel-dompdf": "^1.2"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
