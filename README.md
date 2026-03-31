@@ -2,7 +2,7 @@
 
 ### Laravel wrapper for [Dompdf HTML to PDF Converter](https://github.com/dompdf/dompdf)
 
-[![Tests](https://github.com/adeel3330/insight-guard/actions/workflows/tests.yml/badge.svg)](https://github.com/adeel3330/insight-guard/actions) 
+[![Tests](https://github.com/adeel3330/insight-guard/actions/workflows/test.yml/badge.svg)](https://github.com/adeel3330/insight-guard/actions) 
 
 
 ## Installation
