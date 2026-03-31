@@ -1,6 +1,6 @@
-## DOMPDF Wrapper for Laravel
+## Insight Guard for Laravel
 
-### Laravel wrapper for [Dompdf HTML to PDF Converter](https://github.com/dompdf/dompdf)
+### Laravel wrapper for [Insight Guard](https://github.com/adeel3330/insight-guard)
 
 [![Tests](https://github.com/adeel3330/insight-guard/actions/workflows/run-test.yml/badge.svg)](https://github.com/adeel3330/insight-guard/actions) 
 
